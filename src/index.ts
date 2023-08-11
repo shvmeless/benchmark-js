@@ -2,6 +2,7 @@
 import { average, progressBar, round } from './utils/common'
 import { type BenchmarkItem } from './utils/interfaces'
 import { stdout } from 'process'
+import chalk from 'chalk'
 
 // CLASS
 export class Benchmark {
@@ -73,7 +74,10 @@ export class Benchmark {
 
       row.name = row.name.padStart(longestNameLength, ' ')
 
-      const output = `${row.name} ${row.bar} ${row.average}`
+      let output = `${row.name} ${row.bar} ${row.average}`
+      if (row.min) output = chalk.green(output)
+      if (row.max) output = chalk.red(output)
+
       stdout.write(`${output}\n`)
 
     }
