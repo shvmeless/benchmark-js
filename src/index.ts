@@ -1,6 +1,7 @@
 // IMPORTS
 import { average, progressBar, round } from './utils/common'
 import { type BenchmarkItem } from './utils/interfaces'
+import { Loading } from './utils/loading'
 import { stdout } from 'process'
 import chalk from 'chalk'
 
@@ -25,14 +26,23 @@ export class Benchmark {
       average: 0,
     }))
 
+    const loading = new Loading()
+    loading.start(repetitions)
+
     for (let i = 1; i <= repetitions; i++) {
+
       for (const current of this._functions) {
         const start = performance.now()
         await current.function()
         const end = performance.now()
         current.values.push(end - start)
       }
+
+      loading.refresh(i, repetitions)
+
     }
+
+    loading.done(repetitions)
 
     this._functions = this._functions.map((current) => ({
       name: current.name,
@@ -81,6 +91,8 @@ export class Benchmark {
       stdout.write(`${output}\n`)
 
     }
+
+    stdout.write('\n')
 
   }
 

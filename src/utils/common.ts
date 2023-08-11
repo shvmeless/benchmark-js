@@ -20,6 +20,13 @@ export function round (number: number, decimals = 0): number {
 }
 
 // FUNCTION
+export function trunc (number: number, decimals = 0): number {
+  if (decimals <= 0) return Math.round(number)
+  const factor = Math.pow(10, decimals)
+  return Math.trunc(number * factor) / factor
+}
+
+// FUNCTION
 export function progressBar (percent: number, width = 50): string {
 
   if (percent > 100) percent = 100
