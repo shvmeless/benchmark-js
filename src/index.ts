@@ -1,6 +1,7 @@
 // IMPORTS
+import { average, progressBar, round } from './utils/common'
 import { type BenchmarkItem } from './utils/interfaces'
-import { average } from './utils/common'
+import { stdout } from 'process'
 
 // CLASS
 export class Benchmark {
@@ -38,6 +39,44 @@ export class Benchmark {
       values: current.values,
       average: average(current.values),
     }))
+
+    this.print()
+
+  }
+
+  // METHOD
+  private print (): void {
+
+    const averages = this._functions.map((current) => (current.average))
+    const minAverage = Math.min(...averages)
+    const maxAverage = Math.max(...averages)
+
+    let longestNameLength = 0
+
+    const data = this._functions.map((current) => {
+
+      const percent = current.average * 100 / maxAverage
+
+      if (current.name.length > longestNameLength) longestNameLength = current.name.length
+
+      return {
+        name: current.name,
+        bar: progressBar(percent, 50),
+        average: `${round(current.average, 4)} ms`,
+        min: current.average === minAverage,
+        max: current.average === maxAverage,
+      }
+
+    })
+
+    for (const row of data) {
+
+      row.name = row.name.padStart(longestNameLength, ' ')
+
+      const output = `${row.name} ${row.bar} ${row.average}`
+      stdout.write(`${output}\n`)
+
+    }
 
   }
 
