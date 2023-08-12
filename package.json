@@ -1,5 +1,5 @@
 {
-  "name": "benchmark-js",
+  "name": "@shvmeless/benchmark",
   "description": "Compares the performance of multiple JavaScript functions.",
   "version": "0.1.0",
   "license": "MIT",
@@ -11,8 +11,15 @@
     "type": "git",
     "url": "https://github.com/shvmeless/benchmark-js.git"
   },
+  "main": "dist/index.js",
+  "files": ["dist"],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "lint": "eslint ./src --ext .ts"
+    "lint": "eslint ./src --ext .ts",
+    "build": "tsc",
+    "pack": "npm pack"
   },
   "devDependencies": {
     "@types/node": "18.16.20",
